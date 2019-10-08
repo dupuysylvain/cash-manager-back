@@ -11,14 +11,9 @@ public class Article {
     private String barcode;
     private String name;
     private BigDecimal price;
+    private String image;
 
     public Article() {}
-
-    public Article(String barcode, String name, BigDecimal price) {
-        this.barcode = barcode;
-        this.name = name;
-        this.price = price;
-    }
 
     public String getName() {
         return name;
@@ -44,12 +39,21 @@ public class Article {
         this.barcode = barcode;
     }
 
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
+    }
+
     @Override
     public String toString() {
-        return "Product{" +
-                "barcode=" + barcode +
-                ", nom='" + name + '\'' +
+        return "Article{" +
+                "barcode='" + barcode + '\'' +
+                ", name='" + name + '\'' +
                 ", price=" + price +
+                ", image='" + image + '\'' +
                 '}';
     }
 }
