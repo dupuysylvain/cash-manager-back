@@ -1,6 +1,7 @@
 package com.epitech.cashmanager.model;
 
-import org.codehaus.jackson.annotate.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import javax.persistence.*;
 import java.util.List;
@@ -16,8 +17,8 @@ public class User {
     @Column(name = "username")
     private String username;
 
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @Column(name = "password")
-    @JsonIgnore
     private String password;
 
     @Column(name = "first_name")

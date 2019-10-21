@@ -10,16 +10,23 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
+/**
+ * controller of articles
+ * STANDARD and ADMIN users can use it
+ */
 @RestController
+@PreAuthorize("hasAuthority('ADMIN_USER') or hasAuthority('STANDARD_USER')")
 public class ArticleController {
 
     @Autowired
     private ArticleDao articleDao;
 
+    /**
+     * get list of all articles
+     * @return
+     */
     @RequestMapping(value="/api/articles", method= RequestMethod.GET)
-    // @PreAuthorize("hasAuthority('ADMIN_USER') or hasAuthority('STANDARD_USER')")
     public Iterable<Article> listArticles() {
         return articleDao.findAll();
     }
-
 }

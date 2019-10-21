@@ -15,6 +15,24 @@ spring.datasource.username=postgres
 spring.datasource.password=password
 ```
 
+### default users :
+* john.doe / password (STANDARD)
+* admin.admin / password (ADMIN)
+
+## Routes
+
+```
+- authentication (JWT)
+    POST /auth/authenticate
+
+- articles
+    GET /api/articles
+
+- users (admin only)
+    GET /api/users
+    POST /api/users
+```
+
 ## Team
 
 Charles LAVALARD

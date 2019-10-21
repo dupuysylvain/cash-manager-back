@@ -12,36 +12,35 @@ import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Logger;
 
-@Component
-public class AppUserDetailsService implements UserDetailsService {
+@Component("AppUserDetailsService")
+ public class AppUserDetailsService implements UserDetailsService {
 
-    @Autowired
-    private UserDao userRepository;
+     @Autowired
+     private UserDao userRepository;
 
-    private static Logger LOGGER = Logger.getLogger("AppUserDetailsService");
+     @Override
+     public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
 
-    @Override
-    public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
+         User user = userRepository.findByUsername(s);
 
-        LOGGER.severe("coucou " + s);
+         if(user == null) {
+             throw new UsernameNotFoundException(String.format("The username %s doesn't exist", s));
+         }
 
-        User user = userRepository.findByUsername(s);
+         List<GrantedAuthority> authorities = new ArrayList<>();
 
-        if(user == null) {
-            throw new UsernameNotFoundException(String.format("The username %s doesn't exist", s));
-        }
+         user.getRoles().forEach(role -> {
+             authorities.add(new SimpleGrantedAuthority(role.getRoleName()));
+         });
 
-        List<GrantedAuthority> authorities = new ArrayList<>();
+         System.out.println("yo");
+         System.out.println(authorities);
+         System.out.println("nop");
 
-        user.getRoles().forEach(role -> {
-            authorities.add(new SimpleGrantedAuthority(role.getRoleName()));
-        });
+         UserDetails userDetails = new org.springframework.security.core.userdetails.
+                 User(user.getUsername(), user.getPassword(), authorities);
 
-        UserDetails userDetails = new org.springframework.security.core.userdetails.
-                User(user.getUsername(), user.getPassword(), authorities);
-
-        return userDetails;
-    }
-}
+         return userDetails;
+     }
+ } 
