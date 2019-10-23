@@ -5,7 +5,7 @@ import javax.persistence.*;
 @Entity
 @Table(name="app_role")
 public class Role {
-    private static final long serialVersionUID = 1L;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -16,6 +16,8 @@ public class Role {
     @Column(name="description")
     private String description;
 
+    public Role() {
+    }
 
     public Long getId() {
         return id;
@@ -39,5 +41,14 @@ public class Role {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    @Override
+    public String toString() {
+        return "Role{" +
+                "id=" + id +
+                ", roleName='" + roleName + '\'' +
+                ", description='" + description + '\'' +
+                '}';
     }
 }

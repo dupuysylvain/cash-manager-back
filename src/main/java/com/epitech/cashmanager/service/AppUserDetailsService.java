@@ -13,8 +13,8 @@ import org.springframework.stereotype.Component;
 import java.util.ArrayList;
 import java.util.List;
 
-@Component("AppUserDetailsService")
- public class AppUserDetailsService implements UserDetailsService {
+@Component("userDetailsService")
+public class AppUserDetailsService implements UserDetailsService {
 
      @Autowired
      private UserDao userRepository;
@@ -33,10 +33,6 @@ import java.util.List;
          user.getRoles().forEach(role -> {
              authorities.add(new SimpleGrantedAuthority(role.getRoleName()));
          });
-
-         System.out.println("yo");
-         System.out.println(authorities);
-         System.out.println("nop");
 
          UserDetails userDetails = new org.springframework.security.core.userdetails.
                  User(user.getUsername(), user.getPassword(), authorities);
