@@ -31,6 +31,9 @@ spring.datasource.password=password
 - users (admin only)
     GET /api/users
     POST /api/users
+
+- swagger
+    /swagger-ui.html
 ```
 
 ## Team
