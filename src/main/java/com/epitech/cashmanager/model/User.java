@@ -39,6 +39,13 @@ public class User {
                     referencedColumnName = "id"))
     private List<Role> roles;
 
+    @OneToMany(mappedBy = "user")
+    @JsonIgnore
+    private List<Cart> carts;
+
+    public User() {
+    }
+
     public Long getId() {
         return id;
     }
@@ -85,5 +92,25 @@ public class User {
 
     public void setRoles(List<Role> roles) {
         this.roles = roles;
+    }
+
+    public List<Cart> getCarts() {
+        return carts;
+    }
+
+    public void setCarts(List<Cart> carts) {
+        this.carts = carts;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", username='" + username + '\'' +
+                ", password='" + password + '\'' +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", roles=" + roles +
+                '}';
     }
 }

@@ -2,6 +2,7 @@ package com.epitech.cashmanager.web.controller;
 
 import com.epitech.cashmanager.dao.ArticleDao;
 import com.epitech.cashmanager.model.Article;
+import com.epitech.cashmanager.service.ArticleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,7 +20,7 @@ import java.util.List;
 public class ArticleController {
 
     @Autowired
-    private ArticleDao articleDao;
+    private ArticleService articleService;
 
     /**
      * get list of all articles
@@ -27,6 +28,6 @@ public class ArticleController {
      */
     @RequestMapping(value="/api/articles", method= RequestMethod.GET)
     public Iterable<Article> listArticles() {
-        return articleDao.findAll();
+        return articleService.getAllArticles();
     }
 }

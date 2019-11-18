@@ -1,11 +1,12 @@
 create table article (
-    barcode varchar(255) not null,
-    name varchar(255) not null,
-    price numeric(19, 2) not null,
-    image varchar(255),
-    primary key (barcode)
+    id serial PRIMARY KEY,
+    barcode varchar(255) NOT NULL,
+    name varchar(255) NOT NULL,
+    price numeric(19, 2) NOT NULL,
+    quantity int NOT NULL,
+    image varchar(255)
 );
 
-insert into article(barcode, name, price, image) values('12345678', 'laptop', 750, 'https://urlz.fr/aJfb');
-insert into article(barcode, name, price, image) values('12345687', 'robot vacuum', 450, 'https://urlz.fr/aJfe');
-insert into article(barcode, name, price, image) values('12435678', 'ping pong table', 400, 'https://urlz.fr/aJfg');
+insert into article(barcode, name, price, quantity, image) values('12345678', 'laptop', 750, 10, 'https://urlz.fr/aJfb');
+insert into article(barcode, name, price, quantity, image) values('12345687', 'robot vacuum', 450, 12, 'https://urlz.fr/aJfe');
+insert into article(barcode, name, price, quantity, image) values('12435678', 'ping pong table', 400, 5, 'https://urlz.fr/aJfg');
