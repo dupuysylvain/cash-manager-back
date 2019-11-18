@@ -32,6 +32,11 @@ spring.datasource.password=password
     GET /api/users
     POST /api/users
 
+- cart
+    GET /api/cart (get current cart)
+    POST /api/cart/{articleId}/{quantity} (add article to cart)
+    DELETE /api/cart/{articleId}/{quantity} (remove article from cart)
+
 - swagger
     /swagger-ui.html
 ```
