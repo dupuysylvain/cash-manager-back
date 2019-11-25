@@ -1,14 +1,10 @@
 package com.epitech.cashmanager.web.controller;
 
-import com.epitech.cashmanager.dao.UserDao;
+import com.epitech.cashmanager.repository.UserRepository;
 import com.epitech.cashmanager.model.User;
-import com.epitech.cashmanager.service.AppUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,7 +19,7 @@ import java.security.Principal;
 public class UserController {
 
     @Autowired
-    private UserDao userDao;
+    private UserRepository userRepository;
 
     private BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
 
@@ -33,7 +29,7 @@ public class UserController {
      */
     @RequestMapping(value="/api/users", method= RequestMethod.GET)
     public Iterable<User> listUsers(Principal principal) {
-        return userDao.findAll();
+        return userRepository.findAll();
     }
 
     /**
@@ -45,6 +41,6 @@ public class UserController {
     @ResponseStatus(HttpStatus.CREATED)
     public User createUser(@RequestBody User newUser) {
         newUser.setPassword(bCryptPasswordEncoder.encode(newUser.getPassword()));
-        return userDao.save(newUser);
+        return userRepository.save(newUser);
     }
 }

@@ -4,14 +4,14 @@ import javax.persistence.*;
 import java.math.BigDecimal;
 
 @Entity
-@Table(name="check")
+@Table(name="cheque")
 public class Cheque {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @Column(name = "qrCode")
+    @Column(name = "qr_code")
     private String qrCode;
 
     @Column(name = "value")

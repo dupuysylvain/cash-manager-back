@@ -1,9 +1,9 @@
 package com.epitech.cashmanager.service;
 
-import com.epitech.cashmanager.dao.ArticleDao;
-import com.epitech.cashmanager.dao.CartDao;
-import com.epitech.cashmanager.dao.CartQuantityDao;
-import com.epitech.cashmanager.dao.UserDao;
+import com.epitech.cashmanager.repository.ArticleRepository;
+import com.epitech.cashmanager.repository.CartRepository;
+import com.epitech.cashmanager.repository.CartQuantityRepository;
+import com.epitech.cashmanager.repository.UserRepository;
 import com.epitech.cashmanager.exception.ArticleNotExist;
 import com.epitech.cashmanager.exception.CashManagerException;
 import com.epitech.cashmanager.exception.NotEnoughQuantity;
@@ -12,22 +12,23 @@ import com.epitech.cashmanager.tools.CartStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.HashSet;
 import java.util.Optional;
 
 @Service
 public class CartServiceImpl implements CartService {
 
     @Autowired
-    private UserDao userDao;
+    private UserRepository userRepository;
 
     @Autowired
-    private CartDao cartDao;
+    private CartRepository cartRepository;
 
     @Autowired
-    private CartQuantityDao cartQuantityDao;
+    private CartQuantityRepository cartQuantityRepository;
 
     @Autowired
-    private ArticleDao articleDao;
+    private ArticleRepository articleRepository;
 
     /**
      * Add an article to the cart with a given quantity
@@ -39,7 +40,7 @@ public class CartServiceImpl implements CartService {
      */
     @Override
     public Cart addArticleToCart(String username, int articleId, int quantity) {
-        Optional<Article> article = articleDao.findById(articleId);
+        Optional<Article> article = articleRepository.findById(articleId);
         Cart currentCart = findCurrentCart(username);
         Optional<CartQuantity> currentCartQuantity = findCartQuantityOfArticle(currentCart, articleId);
         CartQuantity newCartQuantity = new CartQuantity();
@@ -56,14 +57,14 @@ public class CartServiceImpl implements CartService {
             CartQuantity cartQuantity = currentCartQuantity.get();
             cartQuantity.setQuantity(quantity);
 
-            cartQuantityDao.save(cartQuantity);
+            cartQuantityRepository.save(cartQuantity);
         } else {
             newCartQuantity.setId(new CartQuantityKey(articleId, currentCart.getId()));
             newCartQuantity.setQuantity(quantity);
             newCartQuantity.setArticle(article.get());
             currentCart.getArticlesWithQuantity().add(newCartQuantity);
 
-            cartQuantityDao.save(newCartQuantity);
+            cartQuantityRepository.save(newCartQuantity);
         }
 
         return currentCart;
@@ -92,11 +93,11 @@ public class CartServiceImpl implements CartService {
 
         if (currentCartQuantity.get().getQuantity() == quantity) {
             currentCart.getArticlesWithQuantity().remove(currentCartQuantity.get());
-            cartQuantityDao.delete(currentCartQuantity.get());
+            cartQuantityRepository.delete(currentCartQuantity.get());
         } else {
             CartQuantity cartQuantity = currentCartQuantity.get();
             cartQuantity.setQuantity(cartQuantity.getQuantity() - quantity);
-            cartQuantityDao.save(cartQuantity);
+            cartQuantityRepository.save(cartQuantity);
         }
 
         return currentCart;
@@ -130,8 +131,9 @@ public class CartServiceImpl implements CartService {
 
         cart.setStatus(CartStatus.NEW);
         cart.setUser(user);
+        cart.setArticlesWithQuantity(new HashSet<>());
 
-        return cartDao.save(cart);
+        return cartRepository.save(cart);
     }
 
     /**
@@ -141,7 +143,7 @@ public class CartServiceImpl implements CartService {
      * @return
      */
     private User findCurrentUser(String username) {
-        return userDao.findByUsername(username);
+        return userRepository.findByUsername(username);
     }
 
     /**

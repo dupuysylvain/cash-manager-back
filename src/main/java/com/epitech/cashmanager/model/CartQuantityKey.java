@@ -1,7 +1,5 @@
 package com.epitech.cashmanager.model;
 
-import com.epitech.cashmanager.dao.CartQuantityDao;
-
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import java.io.Serializable;

@@ -10,7 +10,7 @@ public class CreditCard {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @Column(name = "nfcId")
+    @Column(name = "nfc_id")
     private String nfcId;
 
     @ManyToOne
