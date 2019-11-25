@@ -6,4 +6,5 @@ public interface CartService {
     Cart findCurrentCart(String username);
     Cart addArticleToCart(String username, int articleId, int quantity);
     Cart removeArticleFromCart(String username, int articleId, int quantity);
+    void deleteCart(String username);
 }

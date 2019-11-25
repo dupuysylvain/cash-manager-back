@@ -49,6 +49,7 @@ spring.datasource.password=password
     GET /api/cart (get current cart)
     POST /api/cart/{articleId}/{quantity} (add article to cart)
     DELETE /api/cart/{articleId}/{quantity} (remove article from cart)
+    DELETE /api/cart (cancel current cart)
 
 - swagger
     /swagger-ui.html
