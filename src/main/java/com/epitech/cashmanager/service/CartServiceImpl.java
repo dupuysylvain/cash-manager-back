@@ -103,6 +103,18 @@ public class CartServiceImpl implements CartService {
         return currentCart;
     }
 
+    @Override
+    public void deleteCart(String username) {
+        Cart currentCart = findCurrentCart(username);
+
+        if(currentCart.getArticlesWithQuantity().isEmpty()) {
+            throw new CashManagerException("Trying to cancel empty cart");
+        }
+
+        currentCart.setStatus(CartStatus.CANCELLED);
+        cartRepository.save(currentCart);
+    }
+
     /**
      * Find the cart of the user connected (create a new one if not exist)
      *

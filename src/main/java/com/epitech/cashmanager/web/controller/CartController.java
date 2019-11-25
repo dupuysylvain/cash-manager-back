@@ -43,4 +43,13 @@ public class CartController {
     public Cart currentCart(Principal principal) {
         return cartService.findCurrentCart(principal.getName());
     }
+
+    /**
+     * Cancel current cart
+     * @param principal
+     */
+    @DeleteMapping("/api/cart")
+    public void deleteCart(Principal principal) {
+        cartService.deleteCart(principal.getName());
+    }
 }
