@@ -5,5 +5,3 @@ CREATE TABLE article_cart (
   FOREIGN KEY (article_id) REFERENCES article (id),
   FOREIGN KEY (cart_id) REFERENCES cart (id)
 );
-
-INSERT INTO article_cart(article_id, cart_id, quantity) VALUES (1, 1, 3);

@@ -1,10 +1,13 @@
 package com.epitech.cashmanager.model;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
+import java.time.OffsetDateTime;
+import java.util.Date;
 import java.util.Set;
 
 @Entity
-@Table(name="cart")
+@Table(name = "cart")
 public class Cart {
 
     @Id
@@ -21,7 +24,22 @@ public class Cart {
     @OneToMany(mappedBy = "cart")
     Set<CartQuantity> articlesWithQuantity;
 
+    @Temporal(TemporalType.TIMESTAMP)
+    private OffsetDateTime paymentDate;
+
     public Cart() {
+    }
+
+    public BigDecimal getTotalAmount() {
+        BigDecimal amount = new BigDecimal(0);
+
+        if (this.articlesWithQuantity != null) {
+            for (CartQuantity aq : this.articlesWithQuantity) {
+                amount = amount.add(aq.getArticle().getPrice().multiply(new BigDecimal(aq.getQuantity())));
+            }
+        }
+
+        return amount;
     }
 
     public int getId() {

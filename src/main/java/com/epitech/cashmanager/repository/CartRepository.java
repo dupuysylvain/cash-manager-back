@@ -1,11 +1,11 @@
-package com.epitech.cashmanager.dao;
+package com.epitech.cashmanager.repository;
 
 import com.epitech.cashmanager.model.Cart;
 import org.springframework.data.repository.CrudRepository;
 
 import java.util.List;
 
-public interface CartDao extends CrudRepository<Cart, String> {
+public interface CartRepository extends CrudRepository<Cart, String> {
 
     List<Cart> findByStatus(String status);
 }

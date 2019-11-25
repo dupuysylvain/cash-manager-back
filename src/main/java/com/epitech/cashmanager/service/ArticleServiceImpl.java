@@ -1,6 +1,6 @@
 package com.epitech.cashmanager.service;
 
-import com.epitech.cashmanager.dao.ArticleDao;
+import com.epitech.cashmanager.repository.ArticleRepository;
 import com.epitech.cashmanager.model.Article;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -9,10 +9,10 @@ import org.springframework.stereotype.Service;
 public class ArticleServiceImpl implements ArticleService {
 
     @Autowired
-    private ArticleDao articleDao;
+    private ArticleRepository articleRepository;
 
     @Override
     public Iterable<Article> getAllArticles() {
-        return articleDao.findAll();
+        return articleRepository.findAll();
     }
 }

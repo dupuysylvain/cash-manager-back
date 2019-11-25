@@ -1,6 +1,6 @@
 package com.epitech.cashmanager.service;
 
-import com.epitech.cashmanager.dao.UserDao;
+import com.epitech.cashmanager.repository.UserRepository;
 import com.epitech.cashmanager.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
@@ -17,7 +17,7 @@ import java.util.List;
 public class AppUserDetailsService implements UserDetailsService {
 
      @Autowired
-     private UserDao userRepository;
+     private UserRepository userRepository;
 
      @Override
      public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
