@@ -24,9 +24,6 @@ public class Cart {
     @OneToMany(mappedBy = "cart")
     Set<CartQuantity> articlesWithQuantity;
 
-    @Temporal(TemporalType.TIMESTAMP)
-    private OffsetDateTime paymentDate;
-
     public Cart() {
     }
 

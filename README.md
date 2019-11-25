@@ -27,10 +27,17 @@ spring.datasource.password=password
 
 - articles
     GET /api/articles
+    POST /api/articles (admin only)
 
-- users (admin only)
-    GET /api/users
-    POST /api/users
+- payment
+    POST /api/payment/purchase/{paymentMethod}/{paymentId}
+        paymentMethod : creditCard / cheque
+        paymentId : nfcID / qrCode
+
+- users
+    GET /api/users/me (get current user)
+    GET /api/users (admin only)
+    POST /api/users (admin only)
 
 - cart
     GET /api/cart (get current cart)

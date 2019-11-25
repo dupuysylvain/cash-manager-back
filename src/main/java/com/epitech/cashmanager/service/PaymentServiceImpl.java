@@ -88,7 +88,6 @@ public class PaymentServiceImpl implements PaymentService {
             }
 
             article.setQuantity(newQuantity);
-            // ? articleDao.save(article);
         }
 
         cart.setStatus(CartStatus.DONE);

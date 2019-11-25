@@ -15,4 +15,9 @@ public class ArticleServiceImpl implements ArticleService {
     public Iterable<Article> getAllArticles() {
         return articleRepository.findAll();
     }
+
+    @Override
+    public Article createArticle(Article article) {
+        return articleRepository.save(article);
+    }
 }
