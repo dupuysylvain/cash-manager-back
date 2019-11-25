@@ -11,5 +11,9 @@ RUN mvn -f /home/app/pom.xml clean package
 #
 FROM openjdk:11-jre-slim
 COPY --from=build /home/app/target/cashmanager-0.0.1-SNAPSHOT.jar /usr/local/lib/cashmanager.jar
+COPY wait-for-postgres.sh ./
+RUN chmod +x wait-for-postgres.sh
+# used to check if postgres is launched
+RUN apt update && apt upgrade -y && apt install postgresql -y
 EXPOSE 8080
-ENTRYPOINT ["java","-jar","/usr/local/lib/cashmanager.jar"]
+ENTRYPOINT ["./wait-for-postgres.sh","java","-jar","/usr/local/lib/cashmanager.jar"]
