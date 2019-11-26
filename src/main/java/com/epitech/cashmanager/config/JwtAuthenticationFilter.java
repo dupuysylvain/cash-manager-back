@@ -3,6 +3,8 @@ package com.epitech.cashmanager.config;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -13,6 +15,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import javax.servlet.FilterChain;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.util.Date;
 import java.util.stream.Collectors;
 
@@ -30,6 +33,20 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) {
         var username = request.getParameter("username");
         var password = request.getParameter("password");
+
+        if (username == null || password == null) {
+
+            try {
+                String requestData = request.getReader().lines().collect(Collectors.joining());
+                JSONObject jsonRequest = new JSONObject(requestData);
+
+                username = jsonRequest.has("username") ? jsonRequest.getString("username") : null;
+                password = jsonRequest.has("password") ? jsonRequest.getString("password") : null;
+            } catch (IOException | JSONException e) {
+                // do nothing
+            }
+        }
+
         var authenticationToken = new UsernamePasswordAuthenticationToken(username, password);
 
         return authenticationManager.authenticate(authenticationToken);
