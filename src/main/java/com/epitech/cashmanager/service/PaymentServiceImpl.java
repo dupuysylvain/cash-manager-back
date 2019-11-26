@@ -5,19 +5,18 @@ import com.epitech.cashmanager.exception.CashManagerException;
 import com.epitech.cashmanager.model.*;
 import com.epitech.cashmanager.tools.CartStatus;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
+import java.util.HashMap;
 
 @Service
 public class PaymentServiceImpl implements PaymentService {
 
     @Autowired
     private AccountRepository accountRepository;
-
-    @Autowired
-    private ArticleRepository articleRepository;
 
     @Autowired
     private ChequeRepository chequeRepository;
@@ -28,17 +27,37 @@ public class PaymentServiceImpl implements PaymentService {
     @Autowired
     private CartRepository cartRepository;
 
-    @Override
-    @Transactional
-    public void purchaseWithCreditCard(Cart cart, String nfcId) {
-        Account account = retrieveAccountFromNfcId(nfcId);
+    @Value("${payment.max-attempts}")
+    private Integer maxAttempts;
 
-        blockArticlesAndProceedPayment(cart, account);
+    private HashMap<Integer, Integer> attemptsByCart = new HashMap<>();
+
+    @Override
+    public void purchaseWithCreditCard(Cart cart, String nfcId) {
+        try {
+            launchPurchaseWithCreditCard(cart, nfcId);
+        } catch (CashManagerException e) {
+            handleAttemptFailed(cart, e.getMessage());
+        }
     }
 
     @Override
-    @Transactional
     public void purchaseWithCheque(Cart cart, String qrCode) {
+        try {
+            launchPurchaseWithCheque(cart, qrCode);
+        } catch (CashManagerException e) {
+            handleAttemptFailed(cart, e.getMessage());
+        }
+    }
+
+    @Transactional
+    public void launchPurchaseWithCreditCard(Cart cart, String nfcId) {
+        Account account = retrieveAccountFromNfcId(nfcId);
+        blockArticlesAndProceedPayment(cart, account);
+    }
+
+    @Transactional
+    public void launchPurchaseWithCheque(Cart cart, String qrCode) {
         Cheque cheque = retrieveChequeFromQrCode(qrCode);
         Account account = cheque.getAccount();
 
@@ -48,7 +67,6 @@ public class PaymentServiceImpl implements PaymentService {
 
         cheque.setValue(BigDecimal.ZERO);
         chequeRepository.save(cheque);
-
         blockArticlesAndProceedPayment(cart, account);
     }
 
@@ -95,5 +113,25 @@ public class PaymentServiceImpl implements PaymentService {
 
         account.setBalance(newBalance);
         accountRepository.save(account);
+    }
+
+    private void handleAttemptFailed(Cart cart, String message) {
+        int attempts = 1;
+
+        if (attemptsByCart.containsKey(cart.getId())) {
+            attempts = attemptsByCart.get(cart.getId()) + 1;
+        }
+
+        if (maxAttempts.equals(attempts)) {
+            // revert cart
+            attemptsByCart.remove(cart.getId());
+            cart.setStatus(CartStatus.CANCELLED);
+            cartRepository.save(cart);
+            message = message + " (the cart was cancelled because to much attempts failed : " + maxAttempts + ")";
+        } else {
+            attemptsByCart.put(cart.getId(), attempts);
+        }
+
+        throw new CashManagerException(message);
     }
 }
