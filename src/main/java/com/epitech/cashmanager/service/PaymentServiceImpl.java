@@ -134,4 +134,8 @@ public class PaymentServiceImpl implements PaymentService {
 
         throw new CashManagerException(message);
     }
+
+    public void setMaxAttempts(Integer maxAttempts) {
+        this.maxAttempts = maxAttempts;
+    }
 }
