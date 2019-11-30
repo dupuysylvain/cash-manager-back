@@ -40,7 +40,7 @@ public class PaymentServiceImpl implements PaymentService {
             handleAttemptFailed(cart, e.getMessage());
         }
     }
-
+  
     @Override
     public void purchaseWithCheque(Cart cart, String qrCode) {
         try {
@@ -49,7 +49,7 @@ public class PaymentServiceImpl implements PaymentService {
             handleAttemptFailed(cart, e.getMessage());
         }
     }
-
+  
     @Transactional
     public void launchPurchaseWithCreditCard(Cart cart, String nfcId) {
         Account account = retrieveAccountFromNfcId(nfcId);
@@ -133,5 +133,9 @@ public class PaymentServiceImpl implements PaymentService {
         }
 
         throw new CashManagerException(message);
+    }
+
+    public void setMaxAttempts(Integer maxAttempts) {
+        this.maxAttempts = maxAttempts;
     }
 }
