@@ -5,4 +5,4 @@ CREATE TABLE credit_card (
   FOREIGN KEY (account_id) REFERENCES account (id)
 );
 
-insert into credit_card values (1, 'ceciestlenfcid', '1');
+insert into credit_card values (1, '00ABE3E4', '1');

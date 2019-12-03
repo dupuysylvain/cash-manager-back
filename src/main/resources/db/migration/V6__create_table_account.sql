@@ -7,4 +7,4 @@ CREATE TABLE account (
   FOREIGN KEY (bank_id) REFERENCES bank (id)
 );
 
-INSERT INTO account(id, clientName, clientEmail, balance, bank_id) VALUES(1, 'Sylvain Dupuy', 'dupuy.Sylvain@icloud.com', 200, 3);
+INSERT INTO account(id, clientName, clientEmail, balance, bank_id) VALUES(1, 'Sylvain Dupuy', 'dupuy.Sylvain@icloud.com', 10000, 3);
